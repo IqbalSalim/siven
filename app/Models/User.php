@@ -44,4 +44,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function ormawa()
+    {
+        return $this->hasOne(Ormawa::class);
+    }
 }

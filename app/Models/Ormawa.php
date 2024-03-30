@@ -25,4 +25,9 @@ class Ormawa extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function publikasi()
+    {
+        return $this->hasMany(Publikasi::class);
+    }
 }

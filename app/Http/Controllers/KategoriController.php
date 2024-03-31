@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Kategori;
 use App\Http\Requests\StoreKategoriRequest;
 use App\Http\Requests\UpdateKategoriRequest;
+use App\Http\Resources\KategoriResource;
 
 class KategoriController extends Controller
 {
@@ -13,7 +14,16 @@ class KategoriController extends Controller
      */
     public function index()
     {
-        //
+        $query = Kategori::query();
+        if (request('name')) {
+            $query->where('nama_kategori', 'like', '%' . request('name') . '%');
+        }
+        $kategori = $query->paginate(3)->onEachSide(1);
+        return inertia('Kategori/Index', [
+            'kategori' => KategoriResource::collection($kategori),
+            'queryParams' => request()->query() ?: null,
+            'success' => session('success')
+        ]);
     }
 
     /**
@@ -21,7 +31,7 @@ class KategoriController extends Controller
      */
     public function create()
     {
-        //
+        return inertia('Kategori/Create');
     }
 
     /**
@@ -29,7 +39,10 @@ class KategoriController extends Controller
      */
     public function store(StoreKategoriRequest $request)
     {
-        //
+        $data = $request->validated();
+        Kategori::create($data);
+
+        return to_route('kategori.index')->with('success', 'Kategori berhasil ditambahkan');
     }
 
     /**
@@ -45,7 +58,9 @@ class KategoriController extends Controller
      */
     public function edit(Kategori $kategori)
     {
-        //
+        return inertia('Kategori/Edit', [
+            'kategori' => new KategoriResource($kategori),
+        ]);
     }
 
     /**
@@ -53,7 +68,11 @@ class KategoriController extends Controller
      */
     public function update(UpdateKategoriRequest $request, Kategori $kategori)
     {
-        //
+        $data = $request->validated();
+        $kategori->update($data);
+
+        return to_route('kategori.index')
+            ->with('success', "Kategori \"$kategori->nama_kategori\" berhasil diubah");
     }
 
     /**
@@ -61,6 +80,8 @@ class KategoriController extends Controller
      */
     public function destroy(Kategori $kategori)
     {
-        //
+        $name = $kategori->nama_kategori;
+        $kategori->delete();
+        return to_route('kategori.index')->with('success', "Kategori \"$name\" berhasil dihapus");
     }
 }

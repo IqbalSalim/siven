@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Kategori;
+use App\Models\Ormawa;
 use App\Models\Publikasi;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -14,7 +16,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        for ($i = 0; $i < 5; $i++) {
+            $user = User::factory()->create();
+            Ormawa::create([
+                'user_id' => $user->id,
+                'nama_ormawa' => fake()->name(),
+                'jabatan' => fake()->name()
+            ]);
+        }
 
         // User::factory()->create([
         //     'name' => 'Test User',
@@ -22,5 +31,12 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         Publikasi::factory()->count(10)->hasGaleri(10)->create();
+
+        $array_kategori = ['Edukasi', 'Sosialisasi', 'Pelatihan', 'Pengembangan', 'Hiburan', 'Lomba', 'Penelitian', 'Olahraga'];
+        for ($i = 0; $i < count($array_kategori); $i++) {
+            Kategori::create([
+                'nama_kategori' => $array_kategori[$i]
+            ]);
+        }
     }
 }

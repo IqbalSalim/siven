@@ -18,7 +18,7 @@ class KategoriController extends Controller
         if (request('name')) {
             $query->where('nama_kategori', 'like', '%' . request('name') . '%');
         }
-        $kategori = $query->paginate(3)->onEachSide(1);
+        $kategori = $query->paginate(10)->onEachSide(1);
         return inertia('Kategori/Index', [
             'kategori' => KategoriResource::collection($kategori),
             'queryParams' => request()->query() ?: null,

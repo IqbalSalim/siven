@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -18,6 +19,7 @@ Route::get('/', function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', fn () =>  Inertia::render('Dashboard'))->name('dashboard');
     Route::resource('kategori', KategoriController::class);
+    Route::resource('user', UserController::class);
 });
 
 Route::middleware('auth')->group(function () {

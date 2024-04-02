@@ -40,6 +40,12 @@ export default function AuthenticatedLayout({ user, header, children }) {
                 >
                   User
                 </NavLink>
+                <NavLink
+                  href={route("publikasi.index")}
+                  active={route().current("publikasi.index")}
+                >
+                  Publikasi
+                </NavLink>
               </div>
             </div>
 

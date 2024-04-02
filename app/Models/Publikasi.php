@@ -13,12 +13,18 @@ class Publikasi extends Model
         'judul',
         'isi',
         'tempat',
-        'tanggal_kegiatan'
+        'tanggal_kegiatan',
+        'view',
+        'status',
     ];
 
     public function galeri()
     {
         return $this->hasMany(Galeri::class);
+    }
+    public function publikasi_kategori()
+    {
+        return $this->hasMany(PublikasiKategori::class);
     }
 
     public function komentar()

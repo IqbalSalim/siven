@@ -22,6 +22,7 @@ class PublikasiFactory extends Factory
             'isi' => fake()->realText(),
             'tempat' => fake()->word(),
             'tanggal_kegiatan' => fake()->dateTime(),
+            'status' => fake()->randomElement(['Draft', 'Published', 'Archived']),
             'created_at' => time(),
             'updated_at' => time(),
         ];

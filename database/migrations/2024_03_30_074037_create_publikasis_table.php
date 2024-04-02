@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('tempat');
             $table->timestamp('tanggal_kegiatan');
             $table->integer('view')->nullable();
+            $table->string('status');
             $table->timestamps();
 
             $table->foreignId('ormawa_id')->constrained();

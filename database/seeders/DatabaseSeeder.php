@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Kategori;
 use App\Models\Ormawa;
 use App\Models\Publikasi;
+use App\Models\PublikasiKategori;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -39,8 +40,13 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-        // for($i=0; $i<10; $i++){
-
-        // }
+        for ($i = 1; $i <= 10; $i++) {
+            for ($j = 0; $j <= 5; $j++) {
+                PublikasiKategori::create([
+                    'publikasi_id' => $i,
+                    'kategori_id' => fake()->randomElement([1, 2, 3, 4, 5, 6])
+                ]);
+            }
+        }
     }
 }

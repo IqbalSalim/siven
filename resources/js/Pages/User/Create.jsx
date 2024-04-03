@@ -68,7 +68,7 @@ export default function Create({ auth }) {
                   required
                 />
 
-                <InputError message={errors.nama_pengelola} className="mt-2" />
+                <InputError message={errors.nama_ormawa} className="mt-2" />
               </div>
 
               <div className="mt-4">
@@ -85,7 +85,7 @@ export default function Create({ auth }) {
                   required
                 />
 
-                <InputError message={errors.nama_pengelola} className="mt-2" />
+                <InputError message={errors.jabatan} className="mt-2" />
               </div>
               <div className="mt-4">
                 <InputLabel htmlFor="user_email" value="User Email" />

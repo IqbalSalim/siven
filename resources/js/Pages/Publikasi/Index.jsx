@@ -4,6 +4,10 @@ import { Head, Link, router } from "@inertiajs/react";
 import TextInput from "@/Components/TextInput";
 import TableHeading from "@/Components/TableHEading";
 import SelectInput from "@/Components/SelectInput";
+import {
+  PUBLIKASI_STATUS_CLASS_MAP,
+  PUBLIKASI_STATUS_TEXT_MAP,
+} from "@/constants.jsx";
 
 export default function Index({
   auth,
@@ -48,8 +52,6 @@ export default function Index({
     router.delete(route("publikasi.destroy", publikasi.id));
   };
 
-  console.log(publikasis);
-
   return (
     <AuthenticatedLayout
       user={auth.user}
@@ -76,9 +78,8 @@ export default function Index({
             </div>
           )}
           <div className="overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
-            <div className="p-6 text-gray-900 dark:text-gray-100">
-              <pre>{JSON.stringify(publikasis, undefined, 2)}</pre>
-              <table className="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
+            <div className="p-6 text-gray-900 dark:text-gray-100 overflow-x-auto">
+              <table className="w-full  text-sm table-auto text-left text-gray-500 rtl:text-right dark:text-gray-400">
                 <thead className="text-xs text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                   <tr className="text-nowrap">
                     <TableHeading
@@ -128,48 +129,60 @@ export default function Index({
                   </tr>
                   <tr className="text-nowrap">
                     <th className="px-3 py-3"></th>
+
                     <th className="px-3 py-3">
                       <TextInput
                         className="w-full"
                         defaultValue={queryParams.judul}
-                        placeholder="Project Name"
+                        placeholder="Judul Publikasi"
                         onBlur={(e) =>
                           searchFieldChanged("judul", e.target.value)
                         }
                         onKeyPress={(e) => onKeyPress("judul", e)}
                       />
                     </th>
+                    <th className="px-3 py-3"></th>
+                    <th className="px-3 py-3"></th>
                     <th className="px-3 py-3">
                       <SelectInput
-                        className="w-full"
+                        className="w-full md:w-36"
                         defaultValue={queryParams.status}
                         onChange={(e) =>
                           searchFieldChanged("status", e.target.value)
                         }
                       >
-                        <option value="">Select Status</option>
+                        <option value="">Pilih Status</option>
                         <option value="Draft">Draft</option>
                         <option value="Published">Published</option>
                         <option value="Archived">Archived</option>
                       </SelectInput>
                     </th>
                     <th className="px-3 py-3"></th>
-                    <th className="px-3 py-3"></th>
                   </tr>
                 </thead>
-                <tbody>
-                  {/* {publikasis.data.map((publikasi, i = 0) => (
+                <tbody className="overflow-scroll">
+                  {publikasis.data.map((publikasi, i = 0) => (
                     <tr
                       className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                       key={i}
                     >
                       <td className="px-3 py-2">{(i += 1)}</td>
                       <th className="px-3 py-2 text-gray-500 text-nowrap">
-                        {publikasi.name}
+                        {publikasi.judul}
                       </th>
-                      <td className="px-3 py-2">{publikasi.email}</td>
+                      <td className="px-3 py-2">{publikasi.tempat}</td>
                       <td className="px-3 py-2 text-nowrap">
-                        {publikasi.created_at}
+                        {publikasi.tanggal_kegiatan}
+                      </td>
+                      <td className="px-3 py-2">
+                        <span
+                          className={
+                            "px-2 py-1 rounded text-white " +
+                            PUBLIKASI_STATUS_CLASS_MAP[publikasi.status]
+                          }
+                        >
+                          {PUBLIKASI_STATUS_TEXT_MAP[publikasi.status]}
+                        </span>
                       </td>
                       <td className="px-3 py-2 text-right text-nowrap">
                         <Link
@@ -186,10 +199,10 @@ export default function Index({
                         </button>
                       </td>
                     </tr>
-                  ))} */}
+                  ))}
                 </tbody>
               </table>
-              {/* <Pagination links={publikasis.meta.links} /> */}
+              <Pagination links={publikasis.meta.links} />
             </div>
           </div>
         </div>

@@ -6,6 +6,8 @@ use App\Models\Publikasi;
 use App\Http\Requests\StorePublikasiRequest;
 use App\Http\Requests\UpdatePublikasiRequest;
 use App\Http\Resources\PublikasiResource;
+use App\Http\Resources\SelectKategoriResource;
+use App\Models\Kategori;
 
 class PublikasiController extends Controller
 {
@@ -39,7 +41,9 @@ class PublikasiController extends Controller
      */
     public function create()
     {
-        //
+        return inertia('Publikasi/Create', [
+            'kategoris' => new SelectKategoriResource(Kategori::all())
+        ]);
     }
 
     /**
@@ -47,7 +51,7 @@ class PublikasiController extends Controller
      */
     public function store(StorePublikasiRequest $request)
     {
-        //
+        dd($request->kategori);
     }
 
     /**

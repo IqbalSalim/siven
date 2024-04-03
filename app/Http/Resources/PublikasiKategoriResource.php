@@ -14,6 +14,14 @@ class PublikasiKategoriResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        $kategori = [];
+        foreach ($this->resource as $row) {
+            array_push(
+                $kategori,
+                $row->kategori->nama_kategori
+            );
+        }
+
+        return $kategori;
     }
 }

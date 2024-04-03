@@ -38,5 +38,9 @@ class DatabaseSeeder extends Seeder
                 'nama_kategori' => $array_kategori[$i]
             ]);
         }
+
+        // for($i=0; $i<10; $i++){
+
+        // }
     }
 }

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('isi');
             $table->timestamps();
 
-            $table->foreignId('post_id')->constrained();
+            $table->foreignId('publikasi_id')->constrained();
             $table->foreignId('mahasiswa_id')->constrained();
         });
     }

@@ -34,6 +34,6 @@ class Publikasi extends Model
 
     public function ormawa()
     {
-        return $this->belongsTo(Ormawa::class);
+        return $this->belongsTo(Ormawa::class, 'ormawa_id');
     }
 }

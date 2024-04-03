@@ -3,6 +3,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, router } from "@inertiajs/react";
 import TextInput from "@/Components/TextInput";
 import TableHeading from "@/Components/TableHEading";
+import SelectInput from "@/Components/SelectInput";
 
 export default function Index({
   auth,
@@ -47,9 +48,11 @@ export default function Index({
     router.delete(route("publikasi.destroy", publikasi.id));
   };
 
+  console.log(publikasis);
+
   return (
     <AuthenticatedLayout
-      publikasi={auth.publikasi}
+      user={auth.user}
       header={
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
@@ -87,30 +90,38 @@ export default function Index({
                       ID
                     </TableHeading>
                     <TableHeading
-                      name="name"
+                      name="judul"
                       sort_field={queryParams.sort_field}
                       sort_direction={queryParams.sort_direction}
                       sortChanged={sortChanged}
                     >
-                      Name
+                      Judul
                     </TableHeading>
 
                     <TableHeading
-                      name="email"
+                      name="tempat"
                       sort_field={queryParams.sort_field}
                       sort_direction={queryParams.sort_direction}
                       sortChanged={sortChanged}
                     >
-                      Email
+                      Tempat
                     </TableHeading>
 
                     <TableHeading
-                      name="created_at"
+                      name="tanggal_kegiatan"
                       sort_field={queryParams.sort_field}
                       sort_direction={queryParams.sort_direction}
                       sortChanged={sortChanged}
                     >
-                      Create Date
+                      Tanggal Kegiatan
+                    </TableHeading>
+                    <TableHeading
+                      name="status"
+                      sort_field={queryParams.sort_field}
+                      sort_direction={queryParams.sort_direction}
+                      sortChanged={sortChanged}
+                    >
+                      Status
                     </TableHeading>
 
                     <th className="px-3 py-3 text-right">Actions</th>
@@ -119,35 +130,38 @@ export default function Index({
                     <th className="px-3 py-3"></th>
                     <th className="px-3 py-3">
                       <TextInput
-                        defaultValue={queryParams.name}
                         className="w-full"
-                        placeholder="Publikasi Name"
+                        defaultValue={queryParams.judul}
+                        placeholder="Project Name"
                         onBlur={(e) =>
-                          searchFieldChanged("name", e.target.value)
+                          searchFieldChanged("judul", e.target.value)
                         }
-                        onKeyPress={(e) => onKeyPress("name", e)}
-                      ></TextInput>
+                        onKeyPress={(e) => onKeyPress("judul", e)}
+                      />
                     </th>
                     <th className="px-3 py-3">
-                      <TextInput
-                        defaultValue={queryParams.email}
+                      <SelectInput
                         className="w-full"
-                        placeholder="Publikasi Email"
-                        onBlur={(e) =>
-                          searchFieldChanged("email", e.target.value)
+                        defaultValue={queryParams.status}
+                        onChange={(e) =>
+                          searchFieldChanged("status", e.target.value)
                         }
-                        onKeyPress={(e) => onKeyPress("email", e)}
-                      ></TextInput>
+                      >
+                        <option value="">Select Status</option>
+                        <option value="Draft">Draft</option>
+                        <option value="Published">Published</option>
+                        <option value="Archived">Archived</option>
+                      </SelectInput>
                     </th>
                     <th className="px-3 py-3"></th>
                     <th className="px-3 py-3"></th>
                   </tr>
                 </thead>
                 <tbody>
-                  {publikasis.data.map((publikasi, i = 0) => (
+                  {/* {publikasis.data.map((publikasi, i = 0) => (
                     <tr
                       className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-                      key={publikasi.id}
+                      key={i}
                     >
                       <td className="px-3 py-2">{(i += 1)}</td>
                       <th className="px-3 py-2 text-gray-500 text-nowrap">
@@ -157,25 +171,25 @@ export default function Index({
                       <td className="px-3 py-2 text-nowrap">
                         {publikasi.created_at}
                       </td>
-                      <td className="px-3 py-2 text-nowrap text-right">
-                        {/* <Link
-                          href={route("publikasi.edit", publikasi.id)}
-                          className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1"
+                      <td className="px-3 py-2 text-right text-nowrap">
+                        <Link
+                          href={route("publikasi.edit", 1)}
+                          className="mx-1 font-medium text-blue-600 dark:text-blue-500 hover:underline"
                         >
                           Edit
-                        </Link> */}
+                        </Link>
                         <button
                           onClick={(e) => deletePublikasi(publikasi)}
-                          className="font-medium text-red-600 dark:text-red-500 hover:underline mx-1"
+                          className="mx-1 font-medium text-red-600 dark:text-red-500 hover:underline"
                         >
                           Delete
                         </button>
                       </td>
                     </tr>
-                  ))}
+                  ))} */}
                 </tbody>
               </table>
-              <Pagination links={publikasis.meta.links} />
+              {/* <Pagination links={publikasis.meta.links} /> */}
             </div>
           </div>
         </div>

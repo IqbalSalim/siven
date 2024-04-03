@@ -13,11 +13,11 @@ class PublikasiKategori extends Model
 
     public function publikasi()
     {
-        return $this->belongsTo(Publikasi::class);
+        return $this->belongsTo(Publikasi::class, 'publikasi_id');
     }
 
     public function kategori()
     {
-        return $this->belongsTo(Kategori::class);
+        return $this->belongsTo(Kategori::class, 'kategori_id');
     }
 }

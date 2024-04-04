@@ -22,7 +22,12 @@ class StorePublikasiRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            "judul" => ["required", "string", "max:255"],
+            "isi" => ["required", "string"],
+            "tempat" => ["required", "string", "max:255"],
+            "tanggal_kegiatan" => ["required"],
+            "kategori" => ["required"],
+            "status" => ["required"]
         ];
     }
 }

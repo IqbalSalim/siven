@@ -17,13 +17,14 @@ class PublikasiResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id' => $this->id,
             'judul' => $this->judul,
             'isi' => $this->isi,
             'tempat' => $this->tempat,
             'tanggal_kegiatan' => (new Carbon($this->tanggal_kegiatan))->format('Y-m-d'),
             'view' => $this->view,
             'status' => $this->status,
-            'publikasi_kategori' => new PublikasiKategoriResource($this->publikasi_kategori),
+            'kategori' => new PublikasiKategoriResource($this->publikasi_kategori),
         ];
     }
 }

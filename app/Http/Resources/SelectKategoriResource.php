@@ -7,6 +7,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class SelectKategoriResource extends JsonResource
 {
+    public static $wrap = false;
     /**
      * Transform the resource into an array.
      *
@@ -14,19 +15,16 @@ class SelectKategoriResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return [];
-        // $kategori = [];
-        // $myObj = {};
-        // foreach ($this->resource as $row) {
-        //     $myObj = {
-        //         value: $row->id,
-        //         label: $row->nama_kategori,
-        //     };
-        //     array_push(
-        //         $kategori, $myObj
-        //     );
-        // }
-
-        // return $kategori;
+        $kategori = [];
+        foreach ($this->resource as $row) {
+            array_push(
+                $kategori,
+                (object)[
+                    'value' => $row->id,
+                    'label' => $row->nama_kategori,
+                ]
+            );
+        }
+        return $kategori;
     }
 }

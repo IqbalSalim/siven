@@ -186,7 +186,7 @@ export default function Index({
                       </td>
                       <td className="px-3 py-2 text-right text-nowrap">
                         <Link
-                          href={route("publikasi.edit", 1)}
+                          href={route("publikasi.edit", publikasi.id)}
                           className="mx-1 font-medium text-blue-600 dark:text-blue-500 hover:underline"
                         >
                           Edit

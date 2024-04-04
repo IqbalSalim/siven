@@ -18,10 +18,12 @@ class PublikasiKategoriResource extends JsonResource
         foreach ($this->resource as $row) {
             array_push(
                 $kategori,
-                $row->kategori->nama_kategori
+                (object)[
+                    'value' => $row->kategori_id,
+                    'label' => $row->kategori->nama_kategori,
+                ]
             );
         }
-
         return $kategori;
     }
 }

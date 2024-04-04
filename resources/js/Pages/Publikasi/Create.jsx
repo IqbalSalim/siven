@@ -8,14 +8,14 @@ import { Head, Link, useForm } from "@inertiajs/react";
 import { useState } from "react";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
+import Editor from "react-simple-wysiwyg";
 
-export default function Create({ auth }) {
+export default function Create({ auth, kategoris }) {
   const { data, setData, post, errors, reset } = useForm({
     judul: "",
     isi: "",
     tempat: "",
     tanggal_kegiatan: "",
-    view: "",
     status: "",
     kategori: [],
   });
@@ -26,18 +26,13 @@ export default function Create({ auth }) {
     post(route("publikasi.store"));
   };
 
-  const options = [
-    { value: "chocolate", label: "Chocolate" },
-    { value: "strawberry", label: "Strawberry" },
-    { value: "vanilla", label: "Vanilla" },
-  ];
+  const options = kategoris;
   const animatedComponents = makeAnimated();
 
   const [selectedOptions, setSelectedOptions] = useState([]);
   const handleChange = (selectedOptions) => {
     setSelectedOptions(selectedOptions);
     setData("kategori", selectedOptions);
-    console.log(selectedOptions);
   };
 
   return (
@@ -55,6 +50,7 @@ export default function Create({ auth }) {
 
       <div className="py-12">
         <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+          {/* <pre>{JSON.stringify(kategoris, undefined, 2)}</pre> */}
           <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
             <form
               onSubmit={onSubmit}
@@ -67,7 +63,7 @@ export default function Create({ auth }) {
                   id="judul"
                   type="text"
                   name="name"
-                  value={data.name}
+                  value={data.judul}
                   className="mt-1 block w-full"
                   isFocused={true}
                   onChange={(e) => setData("judul", e.target.value)}
@@ -131,31 +127,17 @@ export default function Create({ auth }) {
                   value={selectedOptions}
                   onChange={handleChange}
                 />
-                {/* <SelectInput
-                  id="kategori"
-                  className="w-full"
-                  defaultValue={queryParams.status}
-                  onChange={(e) => searchFieldChanged("kategori", e.target.value)}
-                >
-                  <option value="">Pilih Kategori</option>
-                  <option value="Draft">Draft</option>
-                  <option value="Published">Published</option>
-                  <option value="Archived">Archived</option>
-                </SelectInput> */}
 
                 <InputError message={errors.kategori} className="mt-2" />
               </div>
               <div className="mt-4">
-                <InputLabel htmlFor="isi" value="Tentang Ormawa" />
-
-                <TextArea
+                <InputLabel htmlFor="isi" value="Deskripsi" />
+                <Editor
                   id="isi"
                   name="isi"
                   value={data.isi}
-                  className="block w-full mt-1"
-                  rows="8"
                   onChange={(e) => setData("isi", e.target.value)}
-                ></TextArea>
+                />
 
                 <InputError className="mt-2" message={errors.isi} />
               </div>
@@ -167,8 +149,17 @@ export default function Create({ auth }) {
                 >
                   Cancel
                 </Link>
-                <button className="bg-emerald-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600">
-                  Submit
+                <button
+                  onClick={() => setData("status", "draft")}
+                  className="bg-purple-500 py-1 px-3 mr-2 text-white rounded shadow transition-all hover:bg-emerald-600"
+                >
+                  Save For Draft
+                </button>
+                <button
+                  onClick={() => setData("status", "published")}
+                  className="bg-emerald-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600"
+                >
+                  Submit For Publish
                 </button>
               </div>
             </form>

@@ -8,6 +8,9 @@ use App\Http\Requests\UpdatePublikasiRequest;
 use App\Http\Resources\PublikasiResource;
 use App\Http\Resources\SelectKategoriResource;
 use App\Models\Kategori;
+use App\Models\PublikasiKategori;
+use DB;
+use Exception;
 
 class PublikasiController extends Controller
 {
@@ -41,8 +44,9 @@ class PublikasiController extends Controller
      */
     public function create()
     {
+
         return inertia('Publikasi/Create', [
-            'kategoris' => new SelectKategoriResource(Kategori::all())
+            'kategoris' => new SelectKategoriResource(Kategori::get())
         ]);
     }
 
@@ -51,8 +55,30 @@ class PublikasiController extends Controller
      */
     public function store(StorePublikasiRequest $request)
     {
-        dd($request->kategori);
+        $data = $request->validated();
+        try {
+            DB::beginTransaction();
+            $data['ormawa_id'] = auth()->user()->ormawa->id;
+            $publikasi = Publikasi::create($data);
+
+            foreach ($request->kategori as $row) {
+
+                PublikasiKategori::create([
+                    'publikasi_id' => $publikasi->id,
+                    'kategori_id' => $row['value']
+                ]);
+            }
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollback();
+            dd($e->getMessage());
+        }
+
+        return to_route('publikasi.index')
+            ->with('success', 'Publikasi berhasil ditambahkan');
     }
+
 
     /**
      * Display the specified resource.
@@ -67,7 +93,10 @@ class PublikasiController extends Controller
      */
     public function edit(Publikasi $publikasi)
     {
-        //
+        return inertia('Publikasi/Edit', [
+            'publikasi' => new PublikasiResource($publikasi),
+            'kategoris' => new SelectKategoriResource(Kategori::get())
+        ]);
     }
 
     /**
@@ -75,7 +104,25 @@ class PublikasiController extends Controller
      */
     public function update(UpdatePublikasiRequest $request, Publikasi $publikasi)
     {
-        //
+        $data = $request->validated();
+        try {
+            DB::beginTransaction();
+            $publikasi->update($data);
+            PublikasiKategori::where('publikasi_id', $publikasi->id)->delete();
+            foreach ($request->kategori as $row) {
+                PublikasiKategori::create([
+                    'publikasi_id' => $publikasi->id,
+                    'kategori_id' => $row['value']
+                ]);
+            }
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollback();
+            dd($e->getMessage());
+        }
+
+        return to_route('publikasi.index')
+            ->with('success', "Publikasi \"$publikasi->judul\" berhasil diubah");
     }
 
     /**

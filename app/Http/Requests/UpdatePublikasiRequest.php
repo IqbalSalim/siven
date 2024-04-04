@@ -11,7 +11,7 @@ class UpdatePublikasiRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,12 @@ class UpdatePublikasiRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            "judul" => ["required", "string", "max:255"],
+            "isi" => ["required", "string"],
+            "tempat" => ["required", "string", "max:255"],
+            "tanggal_kegiatan" => ["required"],
+            "kategori" => ["required"],
+            "status" => ["required"]
         ];
     }
 }

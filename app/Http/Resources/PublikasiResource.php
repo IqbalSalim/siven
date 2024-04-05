@@ -25,6 +25,7 @@ class PublikasiResource extends JsonResource
             'view' => $this->view,
             'status' => $this->status,
             'kategori' => new PublikasiKategoriResource($this->publikasi_kategori),
+            'gambar' => new GaleriResource($this->galeri),
         ];
     }
 }

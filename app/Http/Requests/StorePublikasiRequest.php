@@ -27,7 +27,8 @@ class StorePublikasiRequest extends FormRequest
             "tempat" => ["required", "string", "max:255"],
             "tanggal_kegiatan" => ["required"],
             "kategori" => ["required"],
-            "status" => ["required"]
+            "status" => ["required"],
+            "gambar" => ["required"]
         ];
     }
 }

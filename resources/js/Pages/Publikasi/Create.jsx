@@ -5,7 +5,7 @@ import TextArea from "@/Components/TextArea";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import Editor from "react-simple-wysiwyg";
@@ -45,6 +45,7 @@ export default function Create({ auth, kategoris }) {
   }
 
   function onFileSelect(event) {
+    console.log(event.target.files);
     event.preventDefault();
     const files = event.target.files;
     if (files.length === 0) return;
@@ -61,6 +62,7 @@ export default function Create({ auth, kategoris }) {
       }
     }
   }
+
   function deleteImage(index) {
     setImages((prevImages) => prevImages.filter((_, i) => i !== index));
   }
@@ -76,6 +78,7 @@ export default function Create({ auth, kategoris }) {
   }
   function onDrop(event) {
     event.preventDefault();
+    setData("gambar", event.target.files);
     setIsDragging(false);
     const files = event.dataTransfer.files;
     for (let i = 0; i < files.length; i++) {
@@ -91,6 +94,10 @@ export default function Create({ auth, kategoris }) {
       }
     }
   }
+
+  useEffect(() => {
+    setData("gambar", images);
+  }, [images]);
 
   return (
     <AuthenticatedLayout
@@ -118,7 +125,7 @@ export default function Create({ auth, kategoris }) {
                 <TextInput
                   id="judul"
                   type="text"
-                  name="name"
+                  name="judul"
                   value={data.judul}
                   className="block w-full mt-1"
                   isFocused={true}
@@ -175,6 +182,8 @@ export default function Create({ auth, kategoris }) {
               <div className="mt-4">
                 <InputLabel htmlFor="kategori" value="Kategori" />
                 <Select
+                  id="kategori"
+                  name="kategori"
                   className="focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600"
                   closeMenuOnSelect={false}
                   components={animatedComponents}
@@ -225,8 +234,8 @@ export default function Create({ auth, kategoris }) {
                     id="gambar"
                     name="gambar"
                     className="absolute hidden w-full h-full"
-                    required
                     type="file"
+                    isFocused={true}
                     multiple
                     ref={fileInputRef}
                     onChange={onFileSelect}
@@ -250,7 +259,7 @@ export default function Create({ auth, kategoris }) {
                   </div>
                 </div>
 
-                <InputError message={errors.tempat} className="mt-2" />
+                <InputError message={errors.gambar} className="mt-2" />
               </div>
               <div className="mt-4">
                 <InputLabel htmlFor="isi" value="Deskripsi" />

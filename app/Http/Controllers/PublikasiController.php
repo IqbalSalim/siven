@@ -7,10 +7,13 @@ use App\Http\Requests\StorePublikasiRequest;
 use App\Http\Requests\UpdatePublikasiRequest;
 use App\Http\Resources\PublikasiResource;
 use App\Http\Resources\SelectKategoriResource;
+use App\Models\Galeri;
 use App\Models\Kategori;
 use App\Models\PublikasiKategori;
 use DB;
 use Exception;
+use Storage;
+use Str;
 
 class PublikasiController extends Controller
 {
@@ -55,6 +58,7 @@ class PublikasiController extends Controller
      */
     public function store(StorePublikasiRequest $request)
     {
+        // dd($request->gambar);
         $data = $request->validated();
         try {
             DB::beginTransaction();
@@ -66,6 +70,15 @@ class PublikasiController extends Controller
                 PublikasiKategori::create([
                     'publikasi_id' => $publikasi->id,
                     'kategori_id' => $row['value']
+                ]);
+            }
+
+            foreach ($request->gambar as $row) {
+                $gambar = 'galeri/' . $row['name'];
+                Storage::disk('public')->put($gambar, $row['url']);
+                Galeri::create([
+                    'publikasi_id' => $publikasi->id,
+                    'gambar' => $gambar
                 ]);
             }
 
@@ -95,7 +108,7 @@ class PublikasiController extends Controller
     {
         return inertia('Publikasi/Edit', [
             'publikasi' => new PublikasiResource($publikasi),
-            'kategoris' => new SelectKategoriResource(Kategori::get())
+            'kategoris' => new SelectKategoriResource(Kategori::get()),
         ]);
     }
 

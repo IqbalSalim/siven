@@ -16,14 +16,14 @@ class GaleriResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        // dd($this->resource);
         $galeri = [];
         foreach ($this->resource as $row) {
             array_push(
                 $galeri,
                 (object)[
-                    'name' => substr($row['gambar'], 0, 6),
-                    'url' => Storage::url($row['gambar']),
+                    'id' => $row['id'],
+                    'name' => $row['gambar'],
+                    'url' => (str_contains($row['gambar'], 'https://')) ? $row['gambar'] : Storage::url($row['gambar']),
                 ]
             );
         }

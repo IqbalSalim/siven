@@ -78,8 +78,8 @@ export default function Index({
             </div>
           )}
           <div className="overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
-            <div className="p-6 text-gray-900 dark:text-gray-100 overflow-x-auto">
-              <table className="w-full  text-sm table-auto text-left text-gray-500 rtl:text-right dark:text-gray-400">
+            <div className="p-6 overflow-x-auto text-gray-900 dark:text-gray-100">
+              <table className="w-full text-sm text-left text-gray-500 table-auto rtl:text-right dark:text-gray-400">
                 <thead className="text-xs text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                   <tr className="text-nowrap">
                     <TableHeading

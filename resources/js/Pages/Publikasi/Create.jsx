@@ -45,7 +45,6 @@ export default function Create({ auth, kategoris }) {
   }
 
   function onFileSelect(event) {
-    console.log(event.target.files);
     event.preventDefault();
     const files = event.target.files;
     if (files.length === 0) return;
@@ -57,6 +56,7 @@ export default function Create({ auth, kategoris }) {
           {
             name: files[i].name,
             url: URL.createObjectURL(files[i]),
+            file: files[i],
           },
         ]);
       }
@@ -78,7 +78,6 @@ export default function Create({ auth, kategoris }) {
   }
   function onDrop(event) {
     event.preventDefault();
-    setData("gambar", event.target.files);
     setIsDragging(false);
     const files = event.dataTransfer.files;
     for (let i = 0; i < files.length; i++) {

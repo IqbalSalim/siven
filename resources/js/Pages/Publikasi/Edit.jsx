@@ -18,6 +18,7 @@ export default function Edit({ auth, publikasi, kategoris }) {
     status: publikasi.status || "",
     kategori: publikasi.kategori || [],
     gambar: publikasi.gambar || [],
+    hapusGambar: [],
     _method: "PUT",
   });
 
@@ -25,6 +26,7 @@ export default function Edit({ auth, publikasi, kategoris }) {
   const animatedComponents = makeAnimated();
 
   const [selectedOptions, setSelectedOptions] = useState([]);
+  const [deleteImages, setDeleteImages] = useState([]);
   const handleChange = (selectedOptions) => {
     setSelectedOptions(selectedOptions);
     setData("kategori", selectedOptions);
@@ -45,7 +47,6 @@ export default function Edit({ auth, publikasi, kategoris }) {
   }
 
   function onFileSelect(event) {
-    console.log(event.target.files);
     event.preventDefault();
     const files = event.target.files;
     if (files.length === 0) return;
@@ -55,8 +56,10 @@ export default function Edit({ auth, publikasi, kategoris }) {
         setImages((prevImages) => [
           ...prevImages,
           {
+            id: null,
             name: files[i].name,
             url: URL.createObjectURL(files[i]),
+            file: files[i],
           },
         ]);
       }
@@ -64,6 +67,15 @@ export default function Edit({ auth, publikasi, kategoris }) {
   }
 
   function deleteImage(index) {
+    if (images[index].id !== null) {
+      setDeleteImages((prevDeleteImages) => [
+        ...prevDeleteImages,
+        {
+          id: images[index].id,
+          name: images[index].name,
+        },
+      ]);
+    }
     setImages((prevImages) => prevImages.filter((_, i) => i !== index));
   }
 
@@ -78,7 +90,6 @@ export default function Edit({ auth, publikasi, kategoris }) {
   }
   function onDrop(event) {
     event.preventDefault();
-    setData("gambar", event.target.files);
     setIsDragging(false);
     const files = event.dataTransfer.files;
     for (let i = 0; i < files.length; i++) {
@@ -87,8 +98,10 @@ export default function Edit({ auth, publikasi, kategoris }) {
         setImages((prevImages) => [
           ...prevImages,
           {
+            id: null,
             name: files[i].name,
             url: URL.createObjectURL(files[i]),
+            file: files[i],
           },
         ]);
       }
@@ -98,6 +111,10 @@ export default function Edit({ auth, publikasi, kategoris }) {
   useEffect(() => {
     setData("gambar", images);
   }, [images]);
+
+  useEffect(() => {
+    setData("hapusGambar", deleteImages);
+  }, [deleteImages]);
 
   return (
     <AuthenticatedLayout
@@ -112,7 +129,6 @@ export default function Edit({ auth, publikasi, kategoris }) {
     >
       <Head title="Publikasi" />
       <div className="py-12">
-        <pre>{JSON.stringify(publikasi, undefined, 2)}</pre>
         <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
           <div className="overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
             <div className="p-6 text-gray-900 dark:text-gray-100">

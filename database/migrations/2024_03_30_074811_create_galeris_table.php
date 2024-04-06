@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('gambar');
             $table->timestamps();
 
-            $table->foreignId('publikasi_id')->constrained();
+            $table->foreignId('publikasi_id')->onDelete('cascade');
         });
     }
 

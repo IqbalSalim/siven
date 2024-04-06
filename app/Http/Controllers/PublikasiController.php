@@ -74,8 +74,7 @@ class PublikasiController extends Controller
             }
 
             foreach ($request->gambar as $row) {
-                $gambar = 'galeri/' . $row['name'];
-                Storage::disk('public')->put($gambar, $row['url']);
+                $gambar = $row['file']->store('galeri', 'public');
                 Galeri::create([
                     'publikasi_id' => $publikasi->id,
                     'gambar' => $gambar
@@ -128,6 +127,25 @@ class PublikasiController extends Controller
                     'kategori_id' => $row['value']
                 ]);
             }
+            if ($request->hapusGambar !== null) {
+                foreach ($request->hapusGambar as $row) {
+                    Galeri::where('id', $row['id'])->delete();
+                    if (Storage::disk('public')->exists($row['name'])) {
+                        Storage::disk('public')->delete($row['name']);
+                    }
+                }
+            }
+
+            foreach ($request->gambar as $row) {
+                if ($row['id'] === null) {
+                    $gambar = $row['file']->store('galeri', 'public');
+                    Galeri::create([
+                        'publikasi_id' => $publikasi->id,
+                        'gambar' => $gambar
+                    ]);
+                }
+            }
+
             DB::commit();
         } catch (Exception $e) {
             DB::rollback();
@@ -143,6 +161,8 @@ class PublikasiController extends Controller
      */
     public function destroy(Publikasi $publikasi)
     {
-        //
+        $name = $publikasi->judul;
+        $publikasi->delete();
+        return to_route('publikasi.index')->with('success', "Publikasi \"$name\" berhasil dihapus");
     }
 }

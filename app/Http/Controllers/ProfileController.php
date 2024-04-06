@@ -53,7 +53,7 @@ class ProfileController extends Controller
             if ($ormawa->gambar_profil) {
                 Storage::disk('public')->deleteDirectory(dirname($ormawa->gambar_profil));
             }
-            $gambar_profil = $gambar_profil->store('ormawa/' . Str::random(), 'public');
+            $gambar_profil = $gambar_profil->store('ormawa', 'public');
         } else {
             $gambar_profil = $ormawa->gambar_profil;
         }
@@ -62,7 +62,7 @@ class ProfileController extends Controller
             if ($ormawa->gambar_struktur) {
                 Storage::disk('public')->deleteDirectory(dirname($ormawa->gambar_struktur));
             }
-            $gambar_struktur = $gambar_struktur->store('struktur/' . Str::random(), 'public');
+            $gambar_struktur = $gambar_struktur->store('struktur', 'public');
         } else {
             $gambar_struktur = $ormawa->gambar_struktur;
         }

@@ -1,15 +1,66 @@
-import { Link, Head } from "@inertiajs/react";
+import Pagination from "@/Components/Pagination";
+import TextInput from "@/Components/TextInput";
+import { EyeIcon } from "@heroicons/react/24/solid";
+import { Link, Head, router } from "@inertiajs/react";
+import { useState } from "react";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 
-export default function Landing({ auth }) {
+export default function Landing({
+  auth,
+  kategoris,
+  publikasis,
+  queryParams = null,
+}) {
+  queryParams = queryParams || {};
+  const searchFieldChanged = (name, value) => {
+    if (value) {
+      queryParams[name] = value;
+    } else {
+      delete queryParams[name];
+    }
+    console.log(name, value);
+
+    router.get(route("landing"), queryParams, {
+      preserveScroll: true,
+    });
+  };
+
+  const onKeyPress = (name, e) => {
+    if (e.key !== "Enter") return;
+    searchFieldChanged(name, e.target.value);
+  };
+
+  const sortChanged = (name) => {
+    if (name === queryParams.sort_field) {
+      if (queryParams.sort_direction === "asc") {
+        queryParams.sort_direction = "desc";
+      } else {
+        queryParams.sort_direction = "asc";
+      }
+    } else {
+      queryParams.sort_field = name;
+      queryParams.sort_direction = "asc";
+    }
+    router.get(route("publikasi.index"), queryParams, {
+      preserveScroll: true,
+    });
+  };
+
   const animatedComponents = makeAnimated();
+  const options = kategoris;
+  const [selectedOptions, setSelectedOptions] = useState([]);
+  const handleChange = (selectedOptions) => {
+    setSelectedOptions(selectedOptions);
+    searchFieldChanged("kategori", selectedOptions);
+  };
   return (
     <>
       <Head title="Landing Page" />
 
       {/* Header */}
       <section className="text-white bg-gray-900">
+        {/* <pre>{JSON.stringify(publikasis, undefined, 2)}</pre> */}
         <div className="max-w-screen-xl mx-auto lg:h-screen lg:items-center">
           <header className="bg-blue-300 dark:bg-gray-900">
             <div className="flex items-center h-16 max-w-screen-xl gap-8 px-4 mx-auto sm:px-6 lg:px-8">
@@ -31,14 +82,14 @@ export default function Landing({ auth }) {
                   <div className="sm:flex sm:gap-4">
                     <a
                       className="block rounded-md bg-sky-600 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-sky-700 dark:hover:bg-sky-500"
-                      href="#"
+                      href={route("login")}
                     >
                       Login
                     </a>
 
                     <a
                       className="hidden rounded-md bg-gray-100 px-5 py-2.5 text-sm font-medium text-sky-600 transition hover:text-sky-600/75 sm:block dark:bg-gray-800 dark:text-white dark:hover:text-white/75"
-                      href="#"
+                      href={route("register")}
                     >
                       Register
                     </a>
@@ -119,15 +170,18 @@ export default function Landing({ auth }) {
               className="w-1/2 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600"
               closeMenuOnSelect={false}
               components={animatedComponents}
-              // options={options}
-              // value={selectedOptions}
-              // onChange={handleChange}
+              options={options}
+              value={queryParams.kategori}
+              onChange={handleChange}
               placeholder="Kategori"
             />
-            <input
+            <TextInput
               type="text"
               id="Search"
               placeholder=" Search for..."
+              defaultValue={queryParams.judul}
+              onBlur={(e) => searchFieldChanged("judul", e.target.value)}
+              onKeyPress={(e) => onKeyPress("judul", e)}
               className="w-full rounded-md border-gray-200 py-2.5 pe-10 shadow-sm sm:text-sm dark:border-gray-700 dark:bg-gray-800 dark:text-white"
             />
 
@@ -159,295 +213,70 @@ export default function Landing({ auth }) {
 
         {/* Article */}
         <div className="grid grid-cols-2 mx-16 mt-8 gap-y-4 gap-x-8">
-          <article className="flex transition bg-white shadow-xl dark:bg-gray-900 hover:bg-sky-100 dark:shadow-gray-800/25">
-            <div className="rotate-180 p-2 [writing-mode:_vertical-lr]">
-              <time
-                dateTime="2022-10-10"
-                className="flex items-center justify-between gap-4 text-xs font-bold text-gray-900 uppercase dark:text-white"
-              >
-                <span>2022</span>
-                <span className="flex-1 w-px bg-gray-900/10 dark:bg-white/10"></span>
-                <span>Oct 10</span>
-              </time>
-            </div>
-
-            <div className="hidden sm:block sm:basis-56">
-              <img
-                alt=""
-                src="https://images.unsplash.com/photo-1609557927087-f9cf8e88de18?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80"
-                className="object-cover w-full h-full aspect-square"
-              />
-            </div>
-
-            <div className="flex flex-col justify-between flex-1">
-              <div className="border-s border-gray-900/10 p-4 sm:!border-l-transparent sm:p-6 dark:border-white/10">
-                <a href="#">
-                  <h3 className="font-bold text-gray-900 uppercase dark:text-white">
-                    Finding the right guitar for your style - 5 tips
-                  </h3>
-                </a>
-
-                <p className="mt-2 text-gray-700 line-clamp-3 text-sm/relaxed dark:text-gray-200">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                  Recusandae dolores, possimus pariatur animi temporibus
-                  nesciunt praesentium dolore sed nulla ipsum eveniet corporis
-                  quidem, mollitia itaque minus soluta, voluptates neque
-                  explicabo tempora nisi culpa eius atque dignissimos. Molestias
-                  explicabo corporis voluptatem?
-                </p>
-              </div>
-
-              <div className="sm:flex sm:items-end sm:justify-end">
-                <a
-                  href="#"
-                  className="block px-5 py-3 text-xs font-bold text-center text-gray-900 uppercase transition bg-yellow-400 hover:bg-yellow-500"
+          {publikasis.data.map((publikasi, i = 0) => (
+            <article
+              key={i}
+              className="flex transition bg-white shadow-xl dark:bg-gray-900 hover:bg-sky-100 dark:shadow-gray-800/25"
+            >
+              <div className="rotate-180 p-2 [writing-mode:_vertical-lr]">
+                <time
+                  dateTime="2022-10-10"
+                  className="flex items-center justify-between gap-4 text-xs font-bold text-gray-900 uppercase dark:text-white"
                 >
-                  Read Blog
-                </a>
-              </div>
-            </div>
-          </article>
-          <article className="flex transition bg-white shadow-xl dark:bg-gray-900 dark:shadow-gray-800/25">
-            <div className="rotate-180 p-2 [writing-mode:_vertical-lr]">
-              <time
-                dateTime="2022-10-10"
-                className="flex items-center justify-between gap-4 text-xs font-bold text-gray-900 uppercase dark:text-white"
-              >
-                <span>2022</span>
-                <span className="flex-1 w-px bg-gray-900/10 dark:bg-white/10"></span>
-                <span>Oct 10</span>
-              </time>
-            </div>
-
-            <div className="hidden sm:block sm:basis-56">
-              <img
-                alt=""
-                src="https://images.unsplash.com/photo-1609557927087-f9cf8e88de18?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80"
-                className="object-cover w-full h-full aspect-square"
-              />
-            </div>
-
-            <div className="flex flex-col justify-between flex-1">
-              <div className="border-s border-gray-900/10 p-4 sm:!border-l-transparent sm:p-6 dark:border-white/10">
-                <a href="#">
-                  <h3 className="font-bold text-gray-900 uppercase dark:text-white">
-                    Finding the right guitar for your style - 5 tips
-                  </h3>
-                </a>
-
-                <p className="mt-2 text-gray-700 line-clamp-3 text-sm/relaxed dark:text-gray-200">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                  Recusandae dolores, possimus pariatur animi temporibus
-                  nesciunt praesentium dolore sed nulla ipsum eveniet corporis
-                  quidem, mollitia itaque minus soluta, voluptates neque
-                  explicabo tempora nisi culpa eius atque dignissimos. Molestias
-                  explicabo corporis voluptatem?
-                </p>
+                  <span>{publikasi.tahun}</span>
+                  <span className="flex-1 w-px bg-gray-900/10 dark:bg-white/10"></span>
+                  <span>{publikasi.bulan_tanggal}</span>
+                </time>
               </div>
 
-              <div className="sm:flex sm:items-end sm:justify-end">
-                <a
-                  href="#"
-                  className="block px-5 py-3 text-xs font-bold text-center text-gray-900 uppercase transition bg-yellow-400 hover:bg-yellow-500"
-                >
-                  Read Blog
-                </a>
-              </div>
-            </div>
-          </article>
-          <article className="flex transition bg-white shadow-xl dark:bg-gray-900 dark:shadow-gray-800/25">
-            <div className="rotate-180 p-2 [writing-mode:_vertical-lr]">
-              <time
-                dateTime="2022-10-10"
-                className="flex items-center justify-between gap-4 text-xs font-bold text-gray-900 uppercase dark:text-white"
-              >
-                <span>2022</span>
-                <span className="flex-1 w-px bg-gray-900/10 dark:bg-white/10"></span>
-                <span>Oct 10</span>
-              </time>
-            </div>
-
-            <div className="hidden sm:block sm:basis-56">
-              <img
-                alt=""
-                src="https://images.unsplash.com/photo-1609557927087-f9cf8e88de18?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80"
-                className="object-cover w-full h-full aspect-square"
-              />
-            </div>
-
-            <div className="flex flex-col justify-between flex-1">
-              <div className="border-s border-gray-900/10 p-4 sm:!border-l-transparent sm:p-6 dark:border-white/10">
-                <a href="#">
-                  <h3 className="font-bold text-gray-900 uppercase dark:text-white">
-                    Finding the right guitar for your style - 5 tips
-                  </h3>
-                </a>
-
-                <p className="mt-2 text-gray-700 line-clamp-3 text-sm/relaxed dark:text-gray-200">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                  Recusandae dolores, possimus pariatur animi temporibus
-                  nesciunt praesentium dolore sed nulla ipsum eveniet corporis
-                  quidem, mollitia itaque minus soluta, voluptates neque
-                  explicabo tempora nisi culpa eius atque dignissimos. Molestias
-                  explicabo corporis voluptatem?
-                </p>
+              <div className="hidden sm:block sm:basis-56">
+                <img
+                  alt=""
+                  src={publikasi.gambar[0].url}
+                  className="object-cover w-full h-full aspect-square"
+                />
               </div>
 
-              <div className="sm:flex sm:items-end sm:justify-end">
-                <a
-                  href="#"
-                  className="block px-5 py-3 text-xs font-bold text-center text-gray-900 uppercase transition bg-yellow-400 hover:bg-yellow-500"
-                >
-                  Read Blog
-                </a>
+              <div className="flex flex-col justify-between flex-1">
+                <div className="border-s border-gray-900/10 p-4 sm:!border-l-transparent sm:p-6 dark:border-white/10">
+                  <a href="#">
+                    <h3 className="font-bold text-gray-900 uppercase dark:text-white">
+                      {publikasi.judul}
+                    </h3>
+                  </a>
+
+                  <p className="mt-2 text-gray-700 line-clamp-3 text-sm/relaxed dark:text-gray-200">
+                    {publikasi.isi}
+                  </p>
+                </div>
+                <div className="px-6 font-bold text-sm/relaxed dark:text-white">
+                  <p>
+                    Tanggal: <span>{publikasi.tanggal_kegiatan}</span>
+                  </p>
+                  <p>
+                    Tempat: <span>{publikasi.tempat}</span>
+                  </p>
+                </div>
+
+                <div className="flex-row sm:flex sm:items-end sm:justify-between">
+                  <div className="flex flex-row items-center pl-6 space-x-1">
+                    <EyeIcon className="w-4 h-4 text-blue-500" />
+                    <span className="text-blue-500 text-sm/relaxed dark:text-gray-200">
+                      {publikasi.view}
+                    </span>
+                  </div>
+                  <a
+                    href="#"
+                    className="block px-5 py-3 text-xs font-bold text-center text-gray-900 uppercase transition bg-yellow-400 hover:bg-yellow-500"
+                  >
+                    MORE INFO
+                  </a>
+                </div>
               </div>
-            </div>
-          </article>
-          <article className="flex transition bg-white shadow-xl dark:bg-gray-900 dark:shadow-gray-800/25">
-            <div className="rotate-180 p-2 [writing-mode:_vertical-lr]">
-              <time
-                dateTime="2022-10-10"
-                className="flex items-center justify-between gap-4 text-xs font-bold text-gray-900 uppercase dark:text-white"
-              >
-                <span>2022</span>
-                <span className="flex-1 w-px bg-gray-900/10 dark:bg-white/10"></span>
-                <span>Oct 10</span>
-              </time>
-            </div>
-
-            <div className="hidden sm:block sm:basis-56">
-              <img
-                alt=""
-                src="https://images.unsplash.com/photo-1609557927087-f9cf8e88de18?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80"
-                className="object-cover w-full h-full aspect-square"
-              />
-            </div>
-
-            <div className="flex flex-col justify-between flex-1">
-              <div className="border-s border-gray-900/10 p-4 sm:!border-l-transparent sm:p-6 dark:border-white/10">
-                <a href="#">
-                  <h3 className="font-bold text-gray-900 uppercase dark:text-white">
-                    Finding the right guitar for your style - 5 tips
-                  </h3>
-                </a>
-
-                <p className="mt-2 text-gray-700 line-clamp-3 text-sm/relaxed dark:text-gray-200">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                  Recusandae dolores, possimus pariatur animi temporibus
-                  nesciunt praesentium dolore sed nulla ipsum eveniet corporis
-                  quidem, mollitia itaque minus soluta, voluptates neque
-                  explicabo tempora nisi culpa eius atque dignissimos. Molestias
-                  explicabo corporis voluptatem?
-                </p>
-              </div>
-
-              <div className="sm:flex sm:items-end sm:justify-end">
-                <a
-                  href="#"
-                  className="block px-5 py-3 text-xs font-bold text-center text-gray-900 uppercase transition bg-yellow-400 hover:bg-yellow-500"
-                >
-                  Read Blog
-                </a>
-              </div>
-            </div>
-          </article>
-          <article className="flex transition bg-white shadow-xl dark:bg-gray-900 dark:shadow-gray-800/25">
-            <div className="rotate-180 p-2 [writing-mode:_vertical-lr]">
-              <time
-                dateTime="2022-10-10"
-                className="flex items-center justify-between gap-4 text-xs font-bold text-gray-900 uppercase dark:text-white"
-              >
-                <span>2022</span>
-                <span className="flex-1 w-px bg-gray-900/10 dark:bg-white/10"></span>
-                <span>Oct 10</span>
-              </time>
-            </div>
-
-            <div className="hidden sm:block sm:basis-56">
-              <img
-                alt=""
-                src="https://images.unsplash.com/photo-1609557927087-f9cf8e88de18?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80"
-                className="object-cover w-full h-full aspect-square"
-              />
-            </div>
-
-            <div className="flex flex-col justify-between flex-1">
-              <div className="border-s border-gray-900/10 p-4 sm:!border-l-transparent sm:p-6 dark:border-white/10">
-                <a href="#">
-                  <h3 className="font-bold text-gray-900 uppercase dark:text-white">
-                    Finding the right guitar for your style - 5 tips
-                  </h3>
-                </a>
-
-                <p className="mt-2 text-gray-700 line-clamp-3 text-sm/relaxed dark:text-gray-200">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                  Recusandae dolores, possimus pariatur animi temporibus
-                  nesciunt praesentium dolore sed nulla ipsum eveniet corporis
-                  quidem, mollitia itaque minus soluta, voluptates neque
-                  explicabo tempora nisi culpa eius atque dignissimos. Molestias
-                  explicabo corporis voluptatem?
-                </p>
-              </div>
-
-              <div className="sm:flex sm:items-end sm:justify-end">
-                <a
-                  href="#"
-                  className="block px-5 py-3 text-xs font-bold text-center text-gray-900 uppercase transition bg-yellow-400 hover:bg-yellow-500"
-                >
-                  Read Blog
-                </a>
-              </div>
-            </div>
-          </article>
-          <article className="flex transition bg-white shadow-xl dark:bg-gray-900 dark:shadow-gray-800/25">
-            <div className="rotate-180 p-2 [writing-mode:_vertical-lr]">
-              <time
-                dateTime="2022-10-10"
-                className="flex items-center justify-between gap-4 text-xs font-bold text-gray-900 uppercase dark:text-white"
-              >
-                <span>2022</span>
-                <span className="flex-1 w-px bg-gray-900/10 dark:bg-white/10"></span>
-                <span>Oct 10</span>
-              </time>
-            </div>
-
-            <div className="hidden sm:block sm:basis-56">
-              <img
-                alt=""
-                src="https://images.unsplash.com/photo-1609557927087-f9cf8e88de18?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80"
-                className="object-cover w-full h-full aspect-square"
-              />
-            </div>
-
-            <div className="flex flex-col justify-between flex-1">
-              <div className="border-s border-gray-900/10 p-4 sm:!border-l-transparent sm:p-6 dark:border-white/10">
-                <a href="#">
-                  <h3 className="font-bold text-gray-900 uppercase dark:text-white">
-                    Finding the right guitar for your style - 5 tips
-                  </h3>
-                </a>
-
-                <p className="mt-2 text-gray-700 line-clamp-3 text-sm/relaxed dark:text-gray-200">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                  Recusandae dolores, possimus pariatur animi temporibus
-                  nesciunt praesentium dolore sed nulla ipsum eveniet corporis
-                  quidem, mollitia itaque minus soluta, voluptates neque
-                  explicabo tempora nisi culpa eius atque dignissimos. Molestias
-                  explicabo corporis voluptatem?
-                </p>
-              </div>
-
-              <div className="sm:flex sm:items-end sm:justify-end">
-                <a
-                  href="#"
-                  className="block px-5 py-3 text-xs font-bold text-center text-gray-900 uppercase transition bg-yellow-400 hover:bg-yellow-500"
-                >
-                  Read Blog
-                </a>
-              </div>
-            </div>
-          </article>
+            </article>
+          ))}
         </div>
+        <Pagination links={publikasis.meta.links} />
       </section>
 
       {/* Footer */}

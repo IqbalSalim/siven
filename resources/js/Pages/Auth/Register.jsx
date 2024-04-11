@@ -10,7 +10,7 @@ export default function Register() {
   const { data, setData, post, processing, errors, reset } = useForm({
     name: "",
     nama_ormawa: "",
-    jabatan: "jabatan",
+    jabatan: "",
     email: "",
     password: "",
     password_confirmation: "",

@@ -16,7 +16,7 @@ class Publikasi extends Model
         'tanggal_kegiatan',
         'view',
         'status',
-        'ormawa_id'
+        'ormawa_id',
     ];
 
     public function galeri()

@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Storage;
 
 class OrmawaResource extends JsonResource
 {
@@ -18,7 +19,7 @@ class OrmawaResource extends JsonResource
         return [
             'nama_ormawa' => $this->nama_ormawa,
             'jabatan' => $this->jabatan,
-            'gambar_profil' => $this->gambar_profil,
+            'gambar_profil' => ($this->gambar_profil) ? Storage::url($this->gambar_profil) : '/assets/images/no-image.png',
             'gambar_struktur' => $this->gambar_struktur,
             'tentang_ormawa' => $this->tentang_ormawa,
             'link_twitter' => $this->link_twitter,

@@ -18,14 +18,8 @@ use Inertia\Inertia;
 //     ]);
 // });
 
-// Route::get('/', function () {
-//     return Inertia::render('Landing', [
-//         'canLogin' => Route::has('login'),
-//         'canRegister' => Route::has('register'),
-//     ]);
-
-// });
 Route::get('/', [LandingController::class, 'index'])->name('landing');
+Route::get('show/{publikasi}', [LandingController::class, 'show'])->name('landing.show');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', fn () =>  Inertia::render('Dashboard'))->name('dashboard');

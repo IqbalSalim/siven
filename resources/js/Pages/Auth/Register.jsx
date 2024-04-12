@@ -59,7 +59,6 @@ export default function Register() {
             value={data.nama_ormawa}
             className="block w-full mt-1"
             autoComplete="nama_ormawa"
-            isFocused={true}
             onChange={(e) => setData("nama_ormawa", e.target.value)}
             required
           />
@@ -76,7 +75,6 @@ export default function Register() {
             value={data.jabatan}
             className="block w-full mt-1"
             autoComplete="jabatan"
-            isFocused={true}
             onChange={(e) => setData("jabatan", e.target.value)}
             required
           />

@@ -86,6 +86,7 @@ export default function Create({ auth, kategoris }) {
           {
             name: files[i].name,
             url: URL.createObjectURL(files[i]),
+            file: files[i],
           },
         ]);
       }

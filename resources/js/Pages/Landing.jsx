@@ -4,8 +4,17 @@ import Header from "@/Components/Header";
 import Pagination from "@/Components/Pagination";
 import { EyeIcon } from "@heroicons/react/24/solid";
 import { Link, Head } from "@inertiajs/react";
+import { useLayoutEffect } from "react";
 
 export default function Landing({ kategoris, publikasis, queryParams = null }) {
+  if (queryParams !== null) {
+    useLayoutEffect(() => {
+      const element = document.getElementById("publikasi-event");
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    }, []);
+  }
   return (
     <>
       <Head title="Landing Page" />
@@ -114,8 +123,7 @@ export default function Landing({ kategoris, publikasis, queryParams = null }) {
                     </span>
                   </div>
                   <Link
-                    preserveScroll
-                    href={route("landing.show", publikasi.id)}
+                    href={route("landing.show", publikasi.id, queryParams)}
                     className="block px-5 py-3 text-xs font-bold text-center text-gray-900 uppercase transition bg-yellow-400 hover:bg-yellow-500"
                   >
                     MORE INFO

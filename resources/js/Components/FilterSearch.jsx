@@ -12,7 +12,6 @@ export default function FilterSearch({ queryParams, kategoris }) {
     } else {
       delete queryParams[name];
     }
-    console.log(name, value);
 
     router.get(route("landing"), queryParams, {
       preserveScroll: true,

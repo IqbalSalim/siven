@@ -7,12 +7,15 @@ use App\Models\Ormawa;
 use App\Models\Publikasi;
 use App\Models\PublikasiKategori;
 use App\Models\User;
+use Hash;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
+use Str;
 
 class DatabaseSeeder extends Seeder
 {
+    protected static ?string $password;
     /**
      * Seed the application's database.
      */
@@ -20,6 +23,16 @@ class DatabaseSeeder extends Seeder
     {
         Role::create(['name' => 'admin']);
         Role::create(['name' => 'ormawa']);
+
+        $user = User::create([
+            'name' => 'Admin SIVEN',
+            'email' => 'admin@gmail.com',
+            'email_verified_at' => now(),
+            'password' => static::$password ??= Hash::make('@Admin123'),
+            'remember_token' => Str::random(10),
+        ]);
+        $user->assignRole('admin');
+
         for ($i = 0; $i < 5; $i++) {
             $user = User::factory()->create();
             $user->assignRole('ormawa');
@@ -30,8 +43,7 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-        $user = User::factory()->create();
-        $user->assignRole('admin');
+
 
         Publikasi::factory()->count(10)->hasGaleri(10)->create();
 

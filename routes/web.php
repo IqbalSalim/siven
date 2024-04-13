@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\ProfileController;
@@ -22,7 +23,7 @@ Route::get('/', [LandingController::class, 'index'])->name('landing');
 Route::get('show/{publikasi}', [LandingController::class, 'show'])->name('landing.show');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/dashboard', fn () =>  Inertia::render('Dashboard'))->name('dashboard');
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('kategori', KategoriController::class)->middleware(['role:admin']);
     Route::resource('user', UserController::class)->middleware(['role:admin']);
     Route::resource('publikasi', PublikasiController::class);

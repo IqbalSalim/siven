@@ -9,6 +9,7 @@ use App\Models\PublikasiKategori;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder
 {
@@ -17,8 +18,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        Role::create(['name' => 'admin']);
+        Role::create(['name' => 'ormawa']);
         for ($i = 0; $i < 5; $i++) {
             $user = User::factory()->create();
+            $user->assignRole('ormawa');
             Ormawa::create([
                 'user_id' => $user->id,
                 'nama_ormawa' => fake()->name(),
@@ -26,10 +30,8 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-        // User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        $user = User::factory()->create();
+        $user->assignRole('admin');
 
         Publikasi::factory()->count(10)->hasGaleri(10)->create();
 

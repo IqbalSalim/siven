@@ -23,8 +23,8 @@ Route::get('show/{publikasi}', [LandingController::class, 'show'])->name('landin
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', fn () =>  Inertia::render('Dashboard'))->name('dashboard');
-    Route::resource('kategori', KategoriController::class);
-    Route::resource('user', UserController::class);
+    Route::resource('kategori', KategoriController::class)->middleware(['role:admin']);
+    Route::resource('user', UserController::class)->middleware(['role:admin']);
     Route::resource('publikasi', PublikasiController::class);
 });
 

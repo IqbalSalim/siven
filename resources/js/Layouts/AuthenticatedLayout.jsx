@@ -4,10 +4,13 @@ import Dropdown from "@/Components/Dropdown";
 import NavLink from "@/Components/NavLink";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
 import { Link } from "@inertiajs/react";
+import { usePermission } from "@/composables/permissions";
 
 export default function AuthenticatedLayout({ user, header, children }) {
   const [showingNavigationDropdown, setShowingNavigationDropdown] =
     useState(false);
+
+  const { hasRole } = usePermission();
 
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
@@ -28,18 +31,22 @@ export default function AuthenticatedLayout({ user, header, children }) {
                 >
                   Dashboard
                 </NavLink>
-                <NavLink
-                  href={route("kategori.index")}
-                  active={route().current("kategori.index")}
-                >
-                  Kategori
-                </NavLink>
-                <NavLink
-                  href={route("user.index")}
-                  active={route().current("user.index")}
-                >
-                  User
-                </NavLink>
+                {hasRole("admin") && (
+                  <NavLink
+                    href={route("kategori.index")}
+                    active={route().current("kategori.index")}
+                  >
+                    Kategori
+                  </NavLink>
+                )}
+                {hasRole("admin") && (
+                  <NavLink
+                    href={route("user.index")}
+                    active={route().current("user.index")}
+                  >
+                    User
+                  </NavLink>
+                )}
                 <NavLink
                   href={route("publikasi.index")}
                   active={route().current("publikasi.index")}
@@ -77,9 +84,12 @@ export default function AuthenticatedLayout({ user, header, children }) {
                   </Dropdown.Trigger>
 
                   <Dropdown.Content>
-                    <Dropdown.Link href={route("profile.edit")}>
-                      Profile
-                    </Dropdown.Link>
+                    {hasRole("ormawa") && (
+                      <Dropdown.Link href={route("profile.edit")}>
+                        Profile
+                      </Dropdown.Link>
+                    )}
+
                     <Dropdown.Link
                       href={route("logout")}
                       method="post"

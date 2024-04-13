@@ -11,6 +11,7 @@ use App\Http\Resources\SelectKategoriResource;
 use App\Models\Galeri;
 use App\Models\Kategori;
 use App\Models\PublikasiKategori;
+use Auth;
 use DB;
 use Exception;
 use Storage;
@@ -31,6 +32,9 @@ class PublikasiController extends Controller
         }
         if (request("status")) {
             $query->where("status", "like", "%" . request("status") . "%");
+        }
+        if (Auth::user()->hasRole('ormawa')) {
+            $query->where('ormawa_id', Auth::user()->ormawa->id);
         }
         $publikasi = $query->orderBy($sortField, $sortDirection)
             ->paginate(10)

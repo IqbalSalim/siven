@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Publikasi;
 use App\Http\Requests\StorePublikasiRequest;
 use App\Http\Requests\UpdatePublikasiRequest;
+use App\Http\Resources\DetailPublikasiResource;
 use App\Http\Resources\PublikasiResource;
 use App\Http\Resources\SelectKategoriResource;
 use App\Models\Galeri;
@@ -97,7 +98,12 @@ class PublikasiController extends Controller
      */
     public function show(Publikasi $publikasi)
     {
-        //
+        $publikasi->update([
+            'view' => $publikasi->view += 1
+        ]);
+        return inertia('Publikasi/Preview', [
+            'publikasi' => new DetailPublikasiResource($publikasi),
+        ]);
     }
 
     /**

@@ -8,6 +8,10 @@ import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import { useEffect, useRef, useState } from "react";
 import Editor from "react-simple-wysiwyg";
+import {
+  PUBLIKASI_STATUS_CLASS_MAP,
+  PUBLIKASI_STATUS_TEXT_MAP,
+} from "@/constants";
 
 export default function Edit({ auth, publikasi, kategoris }) {
   const { data, setData, post, errors, reset } = useForm({
@@ -131,6 +135,17 @@ export default function Edit({ auth, publikasi, kategoris }) {
       <div className="py-12">
         <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
           <div className="overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
+            <p className="px-6 pt-2 font-bold">
+              Status:
+              <span
+                className={
+                  "px-2 py-1 ml-2 rounded text-white " +
+                  PUBLIKASI_STATUS_CLASS_MAP[publikasi.status]
+                }
+              >
+                {PUBLIKASI_STATUS_TEXT_MAP[publikasi.status]}
+              </span>
+            </p>
             <div className="p-6 text-gray-900 dark:text-gray-100">
               <form
                 onSubmit={onSubmit}
@@ -298,12 +313,16 @@ export default function Edit({ auth, publikasi, kategoris }) {
                   >
                     Cancel
                   </Link>
-                  <button
-                    onClick={() => setData("status", "draft")}
-                    className="px-3 py-1 mr-2 text-white transition-all bg-purple-500 rounded shadow hover:bg-emerald-600"
-                  >
-                    Save For Draft
-                  </button>
+                  {publikasi.status !== "archived" &&
+                    publikasi.status !== "published" && (
+                      <button
+                        onClick={() => setData("status", "draft")}
+                        className="px-3 py-1 mr-2 text-white transition-all bg-purple-500 rounded shadow hover:bg-emerald-600"
+                      >
+                        Save For Draft
+                      </button>
+                    )}
+
                   <button
                     onClick={() => setData("status", "published")}
                     className="px-3 py-1 text-white transition-all rounded shadow bg-emerald-500 hover:bg-emerald-600"

@@ -168,7 +168,12 @@ export default function Index({
                     >
                       <td className="px-3 py-2">{(i += 1)}</td>
                       <th className="px-3 py-2 text-gray-500 text-nowrap">
-                        {publikasi.judul}
+                        <Link
+                          href={route("publikasi.show", publikasi.id)}
+                          className="hover:underline"
+                        >
+                          {publikasi.judul}
+                        </Link>
                       </th>
                       <td className="px-3 py-2">{publikasi.tempat}</td>
                       <td className="px-3 py-2 text-nowrap">

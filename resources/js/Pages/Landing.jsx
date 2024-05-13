@@ -20,36 +20,34 @@ export default function Landing({ kategoris, publikasis, queryParams = null }) {
       <Head title="Landing Page" />
 
       <section className="text-white bg-gray-900">
-        <div className="max-w-screen-xl mx-auto lg:h-screen lg:items-center">
-          {/* Header */}
-          <Header />
-          <div className="max-w-screen-xl px-4 py-32 mx-auto lg:flex lg:items-center">
-            <div className="max-w-3xl mx-auto text-center">
-              <h1 className="text-3xl font-extrabold text-transparent bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 bg-clip-text sm:text-5xl">
-                Bingung Mencari Informasi Terkait Kegiatan Organisasi Mahasiswa?
-                <span className="sm:block"> Temukan Disini! </span>
-              </h1>
+        {/* Header */}
+        <Header />
+        <div className="max-w-screen-xl px-4 py-32 mx-auto lg:flex lg:items-center">
+          <div className="max-w-3xl mx-auto text-center">
+            <h1 className="text-3xl font-extrabold text-transparent bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 bg-clip-text sm:text-5xl">
+              Bingung Mencari Informasi Terkait Kegiatan Organisasi Mahasiswa?
+              <span className="sm:block"> Temukan Disini! </span>
+            </h1>
 
-              <p className="max-w-xl mx-auto mt-4 sm:text-xl/relaxed">
-                Website ini menampilkan update kegiatan organisasi mahasiswa
-                yang ada di lingkungan Universitas Negeri Gorontalo.
-              </p>
+            <p className="max-w-xl mx-auto mt-4 sm:text-xl/relaxed">
+              Website ini menampilkan update kegiatan organisasi mahasiswa yang
+              ada di lingkungan Universitas Negeri Gorontalo.
+            </p>
 
-              <div className="flex flex-wrap justify-center gap-4 mt-8">
-                <a
-                  className="block w-full px-12 py-3 text-sm font-medium text-white bg-blue-600 border border-blue-600 rounded hover:bg-transparent hover:text-white focus:outline-none focus:ring active:text-opacity-75 sm:w-auto"
-                  href="#publikasi-event"
-                >
-                  Get Started
-                </a>
+            <div className="flex flex-wrap justify-center gap-4 mt-8">
+              <a
+                className="block w-full px-12 py-3 text-sm font-medium text-white bg-blue-600 border border-blue-600 rounded hover:bg-transparent hover:text-white focus:outline-none focus:ring active:text-opacity-75 sm:w-auto"
+                href="#publikasi-event"
+              >
+                Get Started
+              </a>
 
-                <a
-                  className="block w-full px-12 py-3 text-sm font-medium text-white border border-blue-600 rounded hover:bg-blue-600 focus:outline-none focus:ring active:bg-blue-500 sm:w-auto"
-                  href="#"
-                >
-                  Learn More
-                </a>
-              </div>
+              <a
+                className="block w-full px-12 py-3 text-sm font-medium text-white border border-blue-600 rounded hover:bg-blue-600 focus:outline-none focus:ring active:bg-blue-500 sm:w-auto"
+                href="#"
+              >
+                Learn More
+              </a>
             </div>
           </div>
         </div>

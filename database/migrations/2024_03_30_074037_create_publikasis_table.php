@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('publikasis', function (Blueprint $table) {
             $table->id();
             $table->string('judul');
-            $table->string('isi');
+            $table->longText('isi');
             $table->string('tempat');
             $table->timestamp('tanggal_kegiatan');
             $table->integer('view')->default(0);

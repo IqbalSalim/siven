@@ -50,6 +50,8 @@ class RegisteredUserController extends Controller
                 'password' => Hash::make($request->password),
             ]);
 
+            $user->assignRole('ormawa');
+
             Ormawa::create([
                 'user_id' => $user->id,
                 'nama_ormawa' => $request->nama_ormawa,

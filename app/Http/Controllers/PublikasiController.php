@@ -15,7 +15,6 @@ use Auth;
 use DB;
 use Exception;
 use Storage;
-use Str;
 
 class PublikasiController extends Controller
 {
@@ -115,6 +114,8 @@ class PublikasiController extends Controller
      */
     public function edit(Publikasi $publikasi)
     {
+        // $publikasi = new PublikasiResource($publikasi);
+        // // dd($publikasi->images);
         return inertia('Publikasi/Edit', [
             'publikasi' => new PublikasiResource($publikasi),
             'kategoris' => new SelectKategoriResource(Kategori::get()),

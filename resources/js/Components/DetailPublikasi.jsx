@@ -1,24 +1,74 @@
-import Carousel from "./Carousel";
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/16/solid";
 import { EyeIcon } from "@heroicons/react/16/solid";
 import { CalendarDaysIcon, MapPinIcon } from "@heroicons/react/24/solid";
+import { useState } from "react";
 
 export default function DetailPublikasi({ publikasi }) {
   const slides = publikasi.gambar;
+  let [current, setCurrent] = useState(0);
+  let previousSlide = () => {
+    if (current === 0) setCurrent(slides.length - 1);
+    else setCurrent(current - 1);
+  };
+  let nextSlide = () => {
+    if (current === slides.length - 1) setCurrent(0);
+    else setCurrent(current + 1);
+  };
   return (
     <>
       <section className="overflow-hidden text-gray-700 bg-white body-font">
         <div className="container px-5 py-12 mx-auto">
           <div className="flex flex-wrap mx-auto lg:w-4/5">
-            <Carousel>
-              {slides.map((slide) => (
-                <img
-                  key={slide.id}
-                  alt="ecommerce"
-                  className=""
-                  src={slide.url}
-                />
-              ))}
-            </Carousel>
+            <div className="w-full mx-auto lg:w-1/2 lg:pl-10 lg:mt-0">
+              <div className="relative overflow-hidden">
+                <div
+                  className={`flex transition duration-500 ease-out`}
+                  style={{
+                    transform: `translateX(-${current * 100}%)`,
+                  }}
+                >
+                  {slides.map((s) => {
+                    return (
+                      <img
+                        src={s.url}
+                        key={s.id}
+                        alt="gambar publikasi"
+                        className=""
+                      />
+                    );
+                  })}
+                </div>
+                <div className="absolute top-0 flex items-center justify-between w-full h-full px-4 text-white">
+                  <button
+                    onClick={previousSlide}
+                    className="p-1 text-gray-800 rounded-full shadow hover:text-white bg-white/80 hover:bg-sky-600"
+                  >
+                    <ChevronLeftIcon className="w-8 h-8" />
+                  </button>
+                  <button
+                    onClick={nextSlide}
+                    className="p-1 text-gray-800 rounded-full shadow hover:text-white bg-white/80 hover:bg-sky-600"
+                  >
+                    <ChevronRightIcon className="w-8 h-8 " />
+                  </button>
+                </div>
+                <div className="absolute bottom-0 flex justify-center w-full gap-3 py-4">
+                  {slides.map((s, i) => {
+                    return (
+                      <div
+                        onClick={() => {
+                          setCurrent(i);
+                        }}
+                        key={"circle" + i}
+                        className={`w-5 h-5 rounded-full  ${
+                          i == current ? "bg-sky-300" : "bg-sky-600"
+                        }`}
+                      ></div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
             <div className="w-full mt-6 lg:w-1/2 lg:pl-10 lg:py-6 lg:mt-0">
               <div className="flex flex-row items-center space-x-4">
                 <div className="bg-black rounded-full">

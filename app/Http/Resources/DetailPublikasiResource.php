@@ -16,6 +16,7 @@ class DetailPublikasiResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        // dd($request);
         return [
             'id' => $this->id,
             'tahun' => (new Carbon($this->created_at))->format('Y'),

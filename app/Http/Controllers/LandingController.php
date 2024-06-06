@@ -40,7 +40,7 @@ class LandingController extends Controller
     public function show(Publikasi $publikasi)
     {
         $publikasi->update([
-            'view' => $publikasi->view += 1
+            'view' => $publikasi->view += 1,
         ]);
         return inertia('Detail', [
             'canLogin' => Route::has('login'),

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('judul');
             $table->longText('isi');
             $table->string('tempat');
-            $table->timestamp('tanggal_kegiatan');
+            $table->datetime('tanggal_kegiatan');
             $table->integer('view')->default(0);
             $table->string('status');
             $table->timestamps();
